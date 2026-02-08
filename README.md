@@ -30,6 +30,7 @@ Required:
 
 Optional:
 - `JWT_EXPIRES_IN`
+- `CORS_ORIGINS`
 - `LOG_LEVEL`
 - `LOG_SINK`
 

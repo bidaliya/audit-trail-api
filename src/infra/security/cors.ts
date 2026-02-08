@@ -1,10 +1,10 @@
-import cors from "cors";
-import { env } from "@/config/env";
+import cors from 'cors';
+import { env } from '@/config/env';
 
-const allowedOrigins =
-  env.NODE_ENV === "production" ?
-    ["https://your-app.vercel.app"] // Update with actual production URL
-  : ["http://localhost:3002"];
+const fallbackOrigins = ['http://localhost:3000'];
+const allowedOrigins = (env.CORS_ORIGINS ? env.CORS_ORIGINS.split(',') : fallbackOrigins)
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
@@ -14,10 +14,10 @@ export const corsMiddleware = cors({
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
-  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "x-request-id"],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-request-id'],
 });
